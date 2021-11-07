@@ -35,21 +35,89 @@ public class FoodItemCatalogImpl implements IFoodItemCatalog {
 		}
 		else {
 			System.out.println("Items in cart");
-			System.out.println(cart);
+			for(Menu c:cart) {
+			System.out.println(c);
+			
+			}
+			
+			System.out.println("Press 1 if you want to add more items");
+			System.out.println("Press 2 if you want to delete an item");
+			System.out.println("Press 3 if you want to proceed for payment");
+			int addEditPayment=sc.nextInt();
+			if(addEditPayment==1) {
+				showMenu();
+			}else if(addEditPayment==2) {
+				editCart(cart);
+				
+			}else {
+				payForItems(cart);
+			}
+			//try to find the bug here
 		}
 		
 	}
 
-
 	private void addItemsToCart() {
 		// TODO Auto-generated method stub
 		System.out.println("Please enter the item code to add the food item to cart");
+		int itemIndex = 0;
 		String item=sc.nextLine();
-		cart.add(foodMenu.get(0));
+		for(Menu findItem : foodMenu) {
+			if(findItem.getItemId().equalsIgnoreCase(item)) {
+				itemIndex=foodMenu.indexOf(findItem);
+			}
+		}
+		
+		cart.add(foodMenu.get(itemIndex));
 		System.out.println("Item added to cart successfully");
 		
 		
+	}
+
+	private void editCart(ArrayList<Menu> cart) {
+		// TODO Auto-generated method stub
+		System.out.println("enter the item id of item you want to delete from cart");
+		int itemIndex=0;
+		String deleteItem=sc.next();
+		for(Menu c:cart) {
+			if(c.getItemId().equalsIgnoreCase(deleteItem)) {
+				 itemIndex= cart.indexOf(c);
+			}
+		}
+		cart.remove(itemIndex);
+		System.out.println("press 1 to delete more item from cart");
+		System.out.println("press 2 to proceed for payment");
+		//at the point also we can take user to show menu
+		int deleteOrPay=sc.nextInt();
+		if(deleteOrPay==1) {
+			editCart(cart);
+			
+		}else {
+			payForItems(cart);
+		}
 		
+		
+		
+	}
+
+
+	private void payForItems(ArrayList<Menu> cart) {
+		// TODO Auto-generated method stub
+		int totalAmount=0;
+		for(Menu amount:cart) {
+			totalAmount=totalAmount+Integer.parseInt(amount.getPrice());
+		}
+		System.out.println("total amount to be paid "+totalAmount);
+		
+		Thread thread=new Thread();
+		try {
+			thread.sleep(3000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("Payment done");
+		System.out.println("Thanks for your Order !!!");
 		
 	}
 
